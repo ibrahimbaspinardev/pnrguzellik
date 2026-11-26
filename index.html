@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f3f6fa">
   <meta name="description" content="IBAN bilgilerini kolayca görüntüleyin ve kopyalayın.">
-  <title>IBAN Paylaşımı</title>
+  <title>IBAN Kopyalama | Pınar Mermer</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -53,9 +53,7 @@
       min-height: 100vh;
       min-height: 100dvh;
       margin: 0;
-      padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
-      display: grid;
-      place-items: center;
+      padding: max(12px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
       overflow: auto;
       color: var(--text);
       background:
@@ -65,13 +63,13 @@
 
     main {
       width: min(100%, 440px);
-      margin: auto;
+      margin: 0 auto;
     }
 
     .card {
       position: relative;
       overflow: hidden;
-      padding: clamp(26px, 7vw, 40px);
+      padding: clamp(18px, 5vw, 28px);
       border: 1px solid rgba(128, 148, 180, .17);
       border-radius: 28px;
       background: var(--card);
@@ -88,47 +86,9 @@
       content: "";
     }
 
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin: 0 0 29px;
-      color: var(--muted);
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-
-    .shield {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      border: 1px solid rgba(85, 117, 230, .17);
-      border-radius: 11px;
-      color: var(--accent);
-      background: rgba(85, 117, 230, .09);
-    }
-
-    h1 {
-      margin: 0 0 7px;
-      font-size: clamp(1.35rem, 5vw, 1.65rem);
-      font-weight: 720;
-      letter-spacing: -.045em;
-      line-height: 1.2;
-      overflow-wrap: anywhere;
-    }
-
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: .94rem;
-    }
-
     .divider {
       height: 1px;
-      margin: 27px 0 24px;
+      margin: 21px 0;
       border: 0;
       background: var(--line);
     }
@@ -149,7 +109,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 21px;
+      margin-bottom: 18px;
     }
 
     .recipient-name {
@@ -189,16 +149,28 @@
     }
 
     .bank-name {
-      margin: 0 0 22px;
+      margin: 0;
       font-size: .96rem;
       font-weight: 600;
     }
 
     .iban-box {
-      padding: 15px 14px;
+      margin-top: 12px;
+      padding: 14px;
       border: 1px solid var(--line);
       border-radius: 15px;
       background: rgba(128, 148, 180, .055);
+    }
+
+    .iban-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 750;
+      letter-spacing: .1em;
+      text-align: center;
+      text-transform: uppercase;
     }
 
     .iban-number {
@@ -220,7 +192,7 @@
       align-items: center;
       justify-content: center;
       gap: 11px;
-      margin-top: 15px;
+      margin-top: 0;
       padding: 14px 18px;
       border: 0;
       border-radius: 16px;
@@ -265,12 +237,9 @@
     }
 
     @media (max-height: 640px) {
-      body { padding-top: 12px; padding-bottom: 12px; }
-      .card { padding-top: 24px; padding-bottom: 24px; }
-      .eyebrow { margin-bottom: 18px; }
-      .divider { margin-top: 19px; margin-bottom: 18px; }
+      .card { padding-top: 16px; padding-bottom: 16px; }
+      .divider { margin-top: 16px; margin-bottom: 16px; }
       .recipient-row { margin-bottom: 14px; }
-      .bank-name { margin-bottom: 15px; }
       .footer-note { margin-top: 14px; }
     }
 
@@ -281,27 +250,27 @@
 </head>
 <body>
   <main>
-    <article class="card" aria-labelledby="recipient-name">
-      <p class="eyebrow">
-        <span class="shield" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M12 3 19 6v5c0 4.7-3 8-7 10-4-2-7-5.3-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-            <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-        Güvenli ödeme bilgisi
-      </p>
+    <article class="card" aria-label="Pınar Mermer IBAN bilgileri">
+      <button class="copy-button" id="copy-iban" type="button">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span>IBAN'ı Kopyala</span>
+      </button>
 
-      <h1 id="recipient-name">[AD SOYAD VEYA İŞLETME ADI]</h1>
-      <p class="subtitle">IBAN bilgilerini kolayca paylaşın</p>
+      <div class="iban-box">
+        <span class="iban-label">IBAN numarası</span>
+        <span class="iban-number" id="iban-number">TR38 0006 2000 3020 0006 2979 98</span>
+      </div>
 
       <hr class="divider">
 
       <section aria-label="Hesap bilgileri">
         <span class="detail-label">Alıcı adı</span>
         <div class="recipient-row">
-          <span class="recipient-name">[AD SOYAD VEYA İŞLETME ADI]</span>
-          <button class="icon-button" id="copy-name" type="button" aria-label="Alıcı adını kopyala" title="Adı kopyala">
+          <span class="recipient-name" id="recipient-name">Pınar Mermer</span>
+          <button class="icon-button" id="copy-name" type="button" aria-label="Pınar Mermer adını kopyala" title="Adı kopyala">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/>
               <path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.7"/>
@@ -310,19 +279,7 @@
         </div>
 
         <span class="detail-label">Banka</span>
-        <p class="bank-name">BANKA ADI</p>
-
-        <span class="detail-label">IBAN numarası</span>
-        <div class="iban-box">
-          <span class="iban-number" id="iban-number">TR00 0000 0000 0000 0000 0000 00</span>
-        </div>
-        <button class="copy-button" id="copy-iban" type="button">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-          <span>IBAN'ı Kopyala</span>
-        </button>
+        <p class="bank-name">Garanti BBVA</p>
       </section>
 
       <p class="footer-note">
@@ -337,9 +294,8 @@
 
   <script>
     (() => {
-      const ibanText = document.getElementById("iban-number").textContent;
-      const iban = ibanText.replace(/\s+/g, "").replace(/[\[\]]/g, "");
-      const recipient = document.getElementById("recipient-name").textContent.trim();
+      const iban = "TR380006200030200006297998";
+      const recipient = "Pınar Mermer";
       const copyButton = document.getElementById("copy-iban");
       const copyNameButton = document.getElementById("copy-name");
       const status = document.getElementById("copy-status");
@@ -361,7 +317,9 @@
         textarea.style.position = "fixed";
         textarea.style.opacity = "0";
         document.body.appendChild(textarea);
+        textarea.focus();
         textarea.select();
+        textarea.setSelectionRange(0, text.length);
 
         let copied = false;
         try {
@@ -381,6 +339,7 @@
           copyButton.classList.add("is-copied");
           copyButton.querySelector("span").textContent = "Kopyalandı ✓";
           status.textContent = "IBAN panoya kopyalandı.";
+          if (typeof navigator.vibrate === "function") navigator.vibrate(35);
           resetTimer = window.setTimeout(() => {
             copyButton.classList.remove("is-copied");
             copyButton.querySelector("span").textContent = "IBAN'ı Kopyala";
