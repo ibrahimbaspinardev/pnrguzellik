@@ -3,42 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f3f6fa">
-  <meta name="description" content="IBAN bilgilerini kolayca görüntüleyin ve kopyalayın.">
-  <title>IBAN Kopyalama | Pınar Mermer</title>
+  <meta name="theme-color" content="#1f1f1f">
+  <meta name="description" content="PNR Güzellik Salonu IBAN ve hızlı ödeme bilgileri.">
+  <title>PNR Güzellik Salonu | Hızlı Ödeme</title>
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: dark;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-synthesis: none;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      --page: #f3f6fa;
-      --card: rgba(255, 255, 255, .88);
-      --text: #172235;
-      --muted: #78859a;
-      --line: #e8edf4;
-      --accent: #315ee8;
-      --accent-dark: #244bc4;
-      --success: #168657;
-      --success-dark: #11734a;
-      --shadow: 0 24px 70px rgba(34, 52, 86, .12), 0 3px 12px rgba(34, 52, 86, .04);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --page: #0c1220;
-        --card: rgba(22, 31, 48, .94);
-        --text: #edf2fb;
-        --muted: #9aa8bd;
-        --line: #2a3548;
-        --accent: #7795ff;
-        --accent-dark: #91a8ff;
-        --success: #35b77c;
-        --success-dark: #49c98f;
-        --shadow: 0 24px 70px rgba(0, 0, 0, .34), 0 3px 12px rgba(0, 0, 0, .18);
-      }
+      --page: #1f1f1f;
+      --card: rgba(32, 30, 26, .88);
+      --text: #f6f0df;
+      --muted: #b7ad95;
+      --line: rgba(212, 175, 55, .25);
+      --gold: #d4af37;
+      --gold-light: #f1d98c;
+      --gold-dark: #b89347;
+      --success: #087c58;
+      --success-dark: #066448;
+      --shadow: 0 28px 80px rgba(0, 0, 0, .58), 0 5px 20px rgba(0, 0, 0, .3);
     }
 
     * { box-sizing: border-box; }
@@ -53,25 +39,25 @@
       min-height: 100vh;
       min-height: 100dvh;
       margin: 0;
-      padding: max(12px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+      padding: max(10px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
       overflow: auto;
       color: var(--text);
       background:
-        radial-gradient(ellipse at 50% -18%, rgba(80, 119, 236, .12), transparent 55%),
+        radial-gradient(ellipse at 50% -22%, rgba(212, 175, 55, .09), transparent 58%),
         var(--page);
     }
 
     main {
-      width: min(100%, 440px);
+      width: min(100%, 410px);
       margin: 0 auto;
     }
 
     .card {
       position: relative;
       overflow: hidden;
-      padding: clamp(18px, 5vw, 28px);
-      border: 1px solid rgba(128, 148, 180, .17);
-      border-radius: 28px;
+      padding: 16px clamp(16px, 5vw, 24px) 18px;
+      border: 1px solid rgba(212, 175, 55, .25);
+      border-radius: 26px;
       background: var(--card);
       box-shadow: var(--shadow);
       -webkit-backdrop-filter: blur(18px);
@@ -81,26 +67,38 @@
     .card::before {
       position: absolute;
       inset: 0 0 auto;
-      height: 4px;
-      background: linear-gradient(90deg, #5678f4, #74a8ff);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark), var(--gold-light), var(--gold-dark), transparent);
       content: "";
+    }
+
+    .brand-logo {
+      display: block;
+      width: min(148px, 40vw);
+      height: 116px;
+      margin: 0 auto 8px;
+      border-radius: 8px;
+      background: #1f1f1f;
+      object-fit: cover;
+      object-position: center;
     }
 
     .divider {
       height: 1px;
-      margin: 21px 0;
+      margin: 14px 0;
       border: 0;
       background: var(--line);
     }
 
     .detail-label {
       display: block;
-      margin-bottom: 9px;
+      margin-bottom: 6px;
       color: var(--muted);
       font-size: .72rem;
       font-weight: 750;
       letter-spacing: .1em;
       text-transform: uppercase;
+      text-align: left;
     }
 
     .recipient-row {
@@ -109,7 +107,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 13px;
     }
 
     .recipient-name {
@@ -126,10 +124,10 @@
       height: 40px;
       flex: 0 0 auto;
       place-items: center;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(212, 175, 55, .48);
       border-radius: 12px;
-      color: var(--muted);
-      background: transparent;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, .045);
       cursor: pointer;
       transition: color .18s ease, border-color .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
@@ -137,36 +135,38 @@
 
     .icon-button:hover,
     .icon-button:focus-visible {
-      border-color: rgba(49, 94, 232, .35);
-      color: var(--accent);
-      background: rgba(49, 94, 232, .06);
+      border-color: var(--gold);
+      color: #fff1bd;
+      background: rgba(212, 175, 55, .12);
     }
 
     .icon-button:focus-visible,
     .copy-button:focus-visible {
-      outline: 3px solid rgba(80, 119, 236, .35);
+      outline: 3px solid rgba(212, 175, 55, .38);
       outline-offset: 3px;
     }
 
     .bank-name {
       margin: 0;
-      font-size: .96rem;
+      color: #f0dfaf;
+      font-size: .88rem;
       font-weight: 600;
     }
 
     .iban-box {
-      margin-top: 12px;
-      padding: 14px;
-      border: 1px solid var(--line);
+      margin-top: 10px;
+      padding: 12px 10px;
+      border: 1px solid rgba(212, 175, 55, .23);
       border-radius: 15px;
-      background: rgba(128, 148, 180, .055);
+      background: rgba(0, 0, 0, .19);
+      box-shadow: inset 0 1px 14px rgba(0, 0, 0, .15);
     }
 
     .iban-label {
       display: block;
-      margin-bottom: 7px;
+      margin-bottom: 5px;
       color: var(--muted);
-      font-size: .7rem;
+      font-size: .66rem;
       font-weight: 750;
       letter-spacing: .1em;
       text-align: center;
@@ -177,7 +177,7 @@
       display: block;
       color: var(--text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: clamp(.75rem, 3.6vw, 1rem);
+      font-size: clamp(.68rem, 3.45vw, .95rem);
       font-weight: 650;
       letter-spacing: 0;
       line-height: 1.55;
@@ -188,43 +188,71 @@
     .copy-button {
       display: flex;
       width: 100%;
-      min-height: 58px;
+      min-height: 56px;
       align-items: center;
       justify-content: center;
       gap: 11px;
       margin-top: 0;
       padding: 14px 18px;
       border: 0;
-      border-radius: 16px;
-      color: #fff;
-      background: var(--accent);
-      box-shadow: 0 8px 18px rgba(49, 94, 232, .2);
+      border-radius: 15px;
+      color: #201a0b;
+      background: linear-gradient(115deg, #b89347 0%, #f1d98c 48%, #d4af37 100%);
+      box-shadow: 0 8px 22px rgba(184, 147, 71, .22), inset 0 1px rgba(255, 249, 218, .68);
       font: inherit;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       transition: background .2s ease, transform .15s ease, box-shadow .2s ease;
       -webkit-tap-highlight-color: transparent;
     }
 
-    .copy-button:hover { background: var(--accent-dark); }
+    .copy-button:hover { background: linear-gradient(115deg, #c6a457 0%, #f7e5a6 48%, #dfc07a 100%); }
     .copy-button:active { transform: scale(.985); }
 
     .copy-button.is-copied {
+      color: #fff;
       background: var(--success);
-      box-shadow: 0 8px 18px rgba(22, 134, 87, .18);
+      box-shadow: 0 8px 20px rgba(8, 124, 88, .3);
     }
 
     .copy-button.is-copied:hover { background: var(--success-dark); }
 
     .footer-note {
-      margin: 21px 0 0;
+      margin: 15px 0 0;
       color: var(--muted);
-      font-size: .78rem;
+      font-size: .72rem;
       text-align: center;
     }
 
     .footer-note svg { vertical-align: -3px; }
+
+    .recipient-name {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 5px;
+      color: #f5e8c1;
+      font-size: .96rem;
+      font-weight: 650;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .recipient-prefix {
+      color: var(--gold-light);
+      font-weight: 750;
+    }
+
+    .bank-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .bank-row .detail-label { margin: 0; }
 
     .sr-only {
       position: absolute;
@@ -250,7 +278,9 @@
 </head>
 <body>
   <main>
-    <article class="card" aria-label="Pınar Mermer IBAN bilgileri">
+    <article class="card" aria-label="PNR Güzellik Salonu IBAN ve hızlı ödeme bilgileri">
+      <img class="brand-logo" src="logo.png" alt="PNR Güzellik Salonu">
+
       <button class="copy-button" id="copy-iban" type="button">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
@@ -266,11 +296,10 @@
 
       <hr class="divider">
 
-      <section aria-label="Hesap bilgileri">
-        <span class="detail-label">Alıcı adı</span>
+      <section aria-label="PNR Güzellik Salonu hesap bilgileri">
         <div class="recipient-row">
-          <span class="recipient-name" id="recipient-name">Pınar Mermer</span>
-          <button class="icon-button" id="copy-name" type="button" aria-label="Pınar Mermer adını kopyala" title="Adı kopyala">
+          <p class="recipient-name" id="recipient-name"><span class="recipient-prefix">Alıcı:</span> Pınar Mermer</p>
+          <button class="icon-button" id="copy-name" type="button" aria-label="Pınar Mermer adını kopyala" title="Alıcı adını kopyala">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/>
               <path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.7"/>
@@ -278,8 +307,10 @@
           </button>
         </div>
 
-        <span class="detail-label">Banka</span>
-        <p class="bank-name">Garanti BBVA</p>
+        <div class="bank-row">
+          <span class="detail-label">Banka</span>
+          <p class="bank-name">Garanti BBVA</p>
+        </div>
       </section>
 
       <p class="footer-note">
