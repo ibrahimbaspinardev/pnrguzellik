@@ -39,7 +39,9 @@
       min-height: 100vh;
       min-height: 100dvh;
       margin: 0;
-      padding: max(10px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+      display: grid;
+      place-items: center;
+      padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
       overflow: auto;
       color: var(--text);
       background:
@@ -49,13 +51,13 @@
 
     main {
       width: min(100%, 410px);
-      margin: 0 auto;
+      margin: auto;
     }
 
     .card {
       position: relative;
       overflow: hidden;
-      padding: 16px clamp(16px, 5vw, 24px) 18px;
+      padding: 18px clamp(16px, 5vw, 24px) 18px;
       border: 1px solid rgba(212, 175, 55, .25);
       border-radius: 26px;
       background: var(--card);
@@ -74,12 +76,10 @@
 
     .brand-logo {
       display: block;
-      width: min(148px, 40vw);
-      height: 116px;
-      margin: 0 auto 8px;
-      border-radius: 8px;
-      background: #1f1f1f;
-      object-fit: cover;
+      width: min(210px, 62vw);
+      height: 155px;
+      margin: 0 auto 6px;
+      object-fit: contain;
       object-position: center;
     }
 
@@ -103,31 +103,29 @@
 
     .recipient-row {
       display: flex;
-      min-height: 42px;
+      min-height: 46px;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 13px;
-    }
-
-    .recipient-name {
-      min-width: 0;
-      font-size: 1rem;
-      font-weight: 650;
-      line-height: 1.4;
-      overflow-wrap: anywhere;
+      margin-bottom: 10px;
     }
 
     .icon-button {
-      display: grid;
-      width: 40px;
+      display: inline-flex;
       height: 40px;
       flex: 0 0 auto;
-      place-items: center;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0 8px;
       border: 1px solid rgba(212, 175, 55, .48);
       border-radius: 12px;
       color: var(--gold-light);
       background: rgba(212, 175, 55, .045);
+      font: inherit;
+      font-size: .7rem;
+      font-weight: 700;
+      white-space: nowrap;
       cursor: pointer;
       transition: color .18s ease, border-color .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
@@ -228,20 +226,13 @@
     .footer-note svg { vertical-align: -3px; }
 
     .recipient-name {
-      display: flex;
+      display: block;
       min-width: 0;
-      align-items: center;
-      gap: 5px;
       color: #f5e8c1;
-      font-size: .96rem;
+      font-size: .88rem;
       font-weight: 650;
       line-height: 1.4;
-      overflow-wrap: anywhere;
-    }
-
-    .recipient-prefix {
-      color: var(--gold-light);
-      font-weight: 750;
+      white-space: nowrap;
     }
 
     .bank-row {
@@ -254,6 +245,8 @@
 
     .bank-row .detail-label { margin: 0; }
 
+    .copy-name-label { line-height: 1; }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -265,10 +258,15 @@
     }
 
     @media (max-height: 640px) {
-      .card { padding-top: 16px; padding-bottom: 16px; }
-      .divider { margin-top: 16px; margin-bottom: 16px; }
-      .recipient-row { margin-bottom: 14px; }
-      .footer-note { margin-top: 14px; }
+      .card { padding-top: 14px; padding-bottom: 14px; }
+      .divider { margin-top: 11px; margin-bottom: 11px; }
+      .recipient-row { margin-bottom: 8px; }
+      .footer-note { margin-top: 10px; }
+    }
+
+    @media (max-height: 520px) {
+      body { place-items: start center; }
+      .brand-logo { height: 126px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -298,12 +296,13 @@
 
       <section aria-label="PNR Güzellik Salonu hesap bilgileri">
         <div class="recipient-row">
-          <p class="recipient-name" id="recipient-name"><span class="recipient-prefix">Alıcı:</span> Pınar Mermer</p>
+          <p class="recipient-name" id="recipient-name">Alıcı: Pınar Mermer</p>
           <button class="icon-button" id="copy-name" type="button" aria-label="Pınar Mermer adını kopyala" title="Alıcı adını kopyala">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/>
               <path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.7"/>
             </svg>
+            <span class="copy-name-label">Adı Kopyala</span>
           </button>
         </div>
 
@@ -330,7 +329,9 @@
       const copyButton = document.getElementById("copy-iban");
       const copyNameButton = document.getElementById("copy-name");
       const status = document.getElementById("copy-status");
+      const copyNameLabel = copyNameButton.querySelector(".copy-name-label");
       let resetTimer;
+      let nameResetTimer;
 
       async function copyText(text) {
         if (navigator.clipboard && window.isSecureContext) {
@@ -385,7 +386,12 @@
         try {
           const copied = await copyText(recipient);
           if (!copied) throw new Error("Pano kopyalama başarısız.");
+          window.clearTimeout(nameResetTimer);
+          copyNameLabel.textContent = "Kopyalandı ✓";
           status.textContent = "Alıcı adı panoya kopyalandı.";
+          nameResetTimer = window.setTimeout(() => {
+            copyNameLabel.textContent = "Adı Kopyala";
+          }, 2000);
         } catch (error) {
           status.textContent = "Ad kopyalanamadı. Lütfen tekrar deneyin.";
           console.error("Alıcı adı panoya kopyalanamadı:", error);
